@@ -41,13 +41,13 @@ if source[-1,1] != "\n"
 end
 puts source</string>
 				<key>input</key>
-				<string>document</string>
+				<string>selection</string>
 				<key>keyEquivalent</key>
 				<string>^@O</string>
 				<key>name</key>
 				<string>Insert newline in the end of file</string>
 				<key>output</key>
-				<string>replaceDocument</string>
+				<string>replaceSelectedText</string>
 				<key>uuid</key>
 				<string>84495BF7-785E-4A17-91A2-2392DEB4E140</string>
 			</dict>
