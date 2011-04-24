@@ -1,0 +1,12 @@
+.DS_Store
+.rvmrc
+*.tmproj
+.specjour
+.yardoc
+# vendor/cache
+vendor/local
+vendor/bundle
+test_form.html
+\#*\#
+.\#*
+*~

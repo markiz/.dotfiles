@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>deleted</key>
+	<array>
+		<string>13264B7A-E10D-471E-B630-CA6AFDDCDD8E</string>
+		<string>F61A9B5A-A31E-45C0-8A08-968A50664CC3</string>
+	</array>
+	<key>name</key>
+	<string>Mark Abramov’s Bundle</string>
+	<key>ordering</key>
+	<array>
+		<string>9620B5AA-D931-4E66-AE1C-F40C67AF346A</string>
+	</array>
+	<key>uuid</key>
+	<string>BE056285-3EC4-4291-8D9C-FB3EC513BE38</string>
+</dict>
+</plist>
