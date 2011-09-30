@@ -1,0 +1,2 @@
+rm -rf SublimeText2/Packages
+cp -R ~/Library/Application\ Support/Sublime\ Text\ 2/Packages SublimeText2/

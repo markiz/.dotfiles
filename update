@@ -1,0 +1,5 @@
+echo Updating dotfiles:
+
+SublimeText2/update
+
+echo ... updated
