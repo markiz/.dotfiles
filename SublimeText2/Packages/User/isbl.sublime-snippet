@@ -1,0 +1,9 @@
+<snippet>
+  <content><![CDATA[
+it_should_behave_like "${1:seg}"
+]]></content>
+  <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+  <tabTrigger>isbl</tabTrigger>
+  <!-- Optional: Set a scope to limit where the snippet will trigger -->
+  <scope>source.ruby.rspec</scope>
+</snippet>
