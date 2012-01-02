@@ -1,15 +1,36 @@
 {
-	"tab_completion": false,
+	"binary_file_patterns":
+	[
+		"*.jpg",
+		"*.jpeg",
+		"*.png",
+		"*.gif",
+		"*.ttf",
+		"*.tga",
+		"*.dds",
+		"*.ico",
+		"*.eot",
+		"*.pdf",
+		"*.swf",
+		"*.jar",
+		"*.zip",
+		"*.sassc",
+		"*.gem",
+		"*."
+	],
+	"caret_style": "smooth",
 	"color_scheme": "Packages/Color Scheme - Default/Twilight.tmTheme",
-	"rulers": [80],
-	"font_face": "Monaco",
-	"font_size": 14.0,
-	"binary_file_patterns": ["*.jpg", "*.jpeg", "*.png", "*.gif", "*.ttf", "*.tga", "*.dds", "*.ico", "*.eot", "*.pdf", "*.swf", "*.jar", "*.zip", "*.sassc", "*.gem", "*."],
-	"trim_automatic_white_space": true,
-	"trim_trailing_white_space_on_save": true,
 	"ensure_newline_at_eof_on_save": true,
+	"font_face": "Monaco",
+	"font_size": 15.0,
+	"highlight_line": true,
+	"rulers":
+	[
+		80
+	],
+	"tab_completion": false,
 	"tab_size": 2,
 	"translate_tabs_to_spaces": true,
-	"highlight_line": true,
-	"caret_style": "smooth"
+	"trim_automatic_white_space": true,
+	"trim_trailing_white_space_on_save": true
 }
