@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[test "${1:description}" do
+  $2
+end]]></content>
+    <tabTrigger>test</tabTrigger>
+    <scope>source.ruby.rails</scope>
+    <description>test do ... end</description>
+</snippet>

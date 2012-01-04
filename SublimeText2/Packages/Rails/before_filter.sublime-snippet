@@ -1,0 +1,6 @@
+<snippet>
+    <content><![CDATA[before_filter :${1:name}, :only => [:${2:when}]]]></content>
+    <tabTrigger>bf</tabTrigger>
+    <scope>source.ruby.rails</scope>
+    <description>before_filter</description>
+</snippet>

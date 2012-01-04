@@ -18,6 +18,8 @@ class DetectFileTypeCommand(sublime_plugin.EventListener):
       set_syntax(view, "RSpec", "RSpec")
     elif name == "gemfile":
       set_syntax(view, "Ruby on Rails", "Rails")
+    elif name[-3:] == "erb":
+      set_syntax(view, "HTML (Rails)", "Rails")
     elif name[-2:] == "rb":
       set_syntax(view, "Ruby on Rails", "Rails")
 
