@@ -1,4 +1,17 @@
 [
   { "keys": ["super+alt+["], "command": "align_assignments" },
-  { "keys": ["super+alt+]"], "command": "align_assignments" }
+  { "keys": ["super+alt+]"], "command": "align_assignments" },
+  { "keys": ["ctrl+~"], "command": "auto_complete" },
+
+  {
+    "keys": ["super+alt+shift+6"],
+    "command": "set_layout",
+    "args":
+    {
+      "cols": [0.0, 0.5, 1.0],
+      "rows": [0.0, 0.33, 1.0],
+      "cells": [[0, 0, 1, 2], [1, 0, 2, 1], [1, 1, 2, 2]]
+    }
+  }
+
 ]

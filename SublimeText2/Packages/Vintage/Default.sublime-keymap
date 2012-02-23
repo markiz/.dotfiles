@@ -16,6 +16,20 @@
 		]
 	},
 
+	{ "keys": ["escape"], "command": "hide_auto_complete", "context":
+		[
+			{ "key": "auto_complete_visible", "operator": "equal", "operand": true }
+		]
+	},
+
+	{ "keys": ["escape"], "command": "vi_cancel_current_action", "context":
+		[
+			{ "key": "setting.command_mode" },
+			{ "key": "selection_empty", "operator": "equal", "operand": true, "match_all": false },
+			{ "key": "vi_has_input_state" }
+		]
+	},
+
 	{ "keys": ["ctrl+["], "command": "exit_insert_mode",
 		"context":
 		[
@@ -35,7 +49,20 @@
 		]
 	},
 
-	{ "keys" : ["z", "z"], "command" : "center_on_cursor", "context": [] },
+	{ "keys": ["ctrl+["], "command": "vi_cancel_current_action", "context":
+		[
+			{ "key": "setting.command_mode" },
+			{ "key": "vi_has_input_state" },
+			{ "key": "selection_empty", "operator": "equal", "operand": true, "match_all": false },
+			{ "key": "setting.vintage_ctrl_keys" }
+		]
+	},
+
+	{ "keys" : ["z", "z"], "command" : "center_on_cursor", "context": [{"key": "setting.command_mode"}] },
+	{ "keys" : ["z", "t"], "command" : "scroll_cursor_line_to_top", "context": [{"key": "setting.command_mode"}] },
+	{ "keys" : ["z", "b"], "command" : "scroll_cursor_line_to_bottom", "context": [{"key": "setting.command_mode"}] },
+
+	{ "keys": ["Z", "Z"], "command" : "vi_save_and_exit", "context": [{"key": "setting.command_mode"}] },
 
 	{ "keys": ["i"], "command": "enter_insert_mode", "context": [{"key": "setting.command_mode"}] },
 	{ "keys": ["I"], "command": "enter_insert_mode", "args":
@@ -103,6 +130,13 @@
 			{"key": "vi_motion_mode", "operand": "line"}
 		]
 	},
+	{ "keys": ["V"], "command": "set_motion_mode", "args": {"mode": "line"},
+		"context":
+		[
+			{"key": "setting.command_mode"},
+			{"key": "vi_has_action" }
+		]
+	},
 
 	{ "keys": ["\"", "<character>"], "command": "set_register",
 		"context": [{"key": "setting.command_mode"}]
@@ -163,7 +197,18 @@
 
 	{ "keys": ["."], "command": "repeat", "context": [{"key": "setting.command_mode"}] },
 
+	{ "keys": ["r", "enter"], "command": "replace_character",
+		"args": {"character": "\n"},
+		"context": [{"key": "setting.command_mode"}]
+	},
+
 	{ "keys": ["r", "<character>"], "command": "replace_character",
+		"context": [{"key": "setting.command_mode"}]
+	},
+
+	{ "keys": ["X"], "command": "set_action_motion", "args": {
+		"action": "vi_left_delete",
+		"motion": null },
 		"context": [{"key": "setting.command_mode"}]
 	},
 
@@ -186,6 +231,24 @@
 		"context": [{"key": "setting.command_mode"}]
 	},
 
+	{ "keys": ["~"], "command": "set_action_motion", "args": {
+		"action": "swap_case",
+		"motion": "vi_move_by_characters_in_line",
+		"motion_args": {"forward": true, "extend": true, "visual": false } },
+		"context":
+		[
+			{"key": "selection_empty", "operator": "equal", "operand": true},
+			{"key": "setting.command_mode"}
+		]
+	},
+
+	{ "keys": ["~"], "command": "swap_case", "context":
+		[
+			{"key": "selection_empty", "operator": "equal", "operand": false},
+			{"key": "setting.command_mode"}
+		]
+	},
+
 	{ "keys": ["q", "<character>"], "command": "vi_begin_record_macro",
 		"context": [{"key": "setting.command_mode"}]
 	},
@@ -205,28 +268,62 @@
 		"context": [{"key": "setting.command_mode"}, {"key": "setting.vintage_ctrl_keys"}]
 	},
 
+	{ "keys": ["ctrl+w", "c"], "command": "close",
+		"context": [{"key": "setting.vintage_ctrl_keys"}, {"key": "setting.command_mode"}]
+	},
+	{ "keys": ["ctrl+w", "q"], "command": "close",
+		"context": [{"key": "setting.vintage_ctrl_keys"}, {"key": "setting.command_mode"}]
+	},
+	{ "keys": ["ctrl+w", "o"], "command": "set_layout",
+		"args":
+		{
+			"cols": [0.0, 1.0],
+			"rows": [0.0, 1.0],
+			"cells": [[0, 0, 1, 1]]
+		},
+		"context": [{"key": "setting.vintage_ctrl_keys"}, {"key": "setting.command_mode"}]
+	},
+
+	{ "keys": ["ctrl+w", "s"], "command": "set_layout",
+		"args":
+		{
+			"cols": [0.0, 1.0],
+			"rows": [0.0, 0.5, 1.0],
+			"cells": [[0, 0, 1, 1], [0, 1, 1, 2]]
+		},
+		"context": [{"key": "setting.vintage_ctrl_keys"}, {"key": "setting.command_mode"}]
+	},
+
+	{ "keys": ["ctrl+w", "v"], "command": "set_layout",
+		"args":
+		{
+			"cols": [0.0, 0.5, 1.0],
+			"rows": [0.0, 1.0],
+			"cells": [[0, 0, 1, 1], [1, 0, 2, 1]]
+		},
+		"context": [{"key": "setting.vintage_ctrl_keys"}, {"key": "setting.command_mode"}]
+	},
+
 	//
 	// Actions
 	//
 
 	{ "keys": ["d"], "command": "set_action", "args": {
 		"action": "vi_delete",
-		"description": "Delete",
-		"motion_mode": "auto_line"},
+		"description": "Delete"},
 		"context": [{"key": "setting.command_mode"}]
 	},
 
 	{ "keys": ["y"], "command": "set_action", "args": {
 		"action": "vi_copy",
-		"description": "Yank",
-		"motion_mode": "auto_line"},
+		"description": "Yank"},
 		"context": [{"key": "setting.command_mode"}]
 	},
 
 	{ "keys": ["c"], "command": "set_action", "args": {
 		"action": "enter_insert_mode",
 		"description": "Change",
-		"action_args": {"insert_command": "left_delete"}},
+		"action_args": {"insert_command": "vi_delete"}},
 		"context": [{"key": "setting.command_mode"}]
 	},
 
@@ -254,7 +351,12 @@
 		"context": [{"key": "setting.command_mode"}]
 	},
 
-	{ "keys": [">"], "command": "set_action", "args": {"action": "vi_indent", "description": "Indent", "motion_mode": "auto_line"},
+	{
+		"keys": ["g", "q"], "command": "set_action", "args": {"action": "wrap_lines", "description": "Wrap Lines"},
+		"context": [{"key": "setting.command_mode"}]
+	},
+
+	{ "keys": [">"], "command": "set_action", "args": {"action": "vi_indent", "description": "Indent"},
 		"context": [{"key": "setting.command_mode"}]
 	},
 
@@ -262,7 +364,7 @@
 		"context": [{"key": "setting.command_mode"}]
 	},
 
-	{ "keys": ["="], "command": "set_action", "args": {"action": "reindent", "description": "Reindent"},
+	{ "keys": ["="], "command": "set_action", "args": {"action": "reindent", "description": "Reindent", "action_args": {"force_indent": false}},
 		"context": [{"key": "setting.command_mode"}]
 	},
 
@@ -283,39 +385,45 @@
 
 	{ "keys": ["W"], "command": "set_motion", "args": {
 		"motion": "move",
-		"motion_args": {"by": "stops", "word_begin": true, "empty_line": true, "separators": "", "forward": true, "extend": true }},
+		"motion_args": {"by": "stops", "word_begin": true, "empty_line": true, "separators": "", "forward": true, "extend": true },
+		"clip_to_line": true },
 		"context": [{"key": "setting.command_mode"}]
 	},
 
 	{ "keys": ["w"], "command": "set_motion", "args": {
 		"motion": "move",
-		"motion_args": {"by": "stops", "word_begin": true, "punct_begin": true, "empty_line": true, "forward": true, "extend": true }},
+		"motion_args": {"by": "stops", "word_begin": true, "punct_begin": true, "empty_line": true, "forward": true, "extend": true },
+		"clip_to_line": true },
 		"context": [{"key": "setting.command_mode"}]
 	},
 
 	{ "keys": ["b"], "command": "set_motion", "args": {
 		"motion": "move",
-		"motion_args": {"by": "stops", "word_begin": true, "punct_begin": true, "empty_line": true, "forward": false, "extend": true }},
+		"motion_args": {"by": "stops", "word_begin": true, "punct_begin": true, "empty_line": true, "forward": false, "extend": true },
+		"clip_to_line": true },
 		"context": [{"key": "setting.command_mode"}]
 	},
 
 	{ "keys": ["B"], "command": "set_motion", "args": {
 		"motion": "move",
-		"motion_args": {"by": "stops", "word_begin": true, "empty_line": true, "separators": "", "forward": false, "extend": true }},
+		"motion_args": {"by": "stops", "word_begin": true, "empty_line": true, "separators": "", "forward": false, "extend": true },
+		"clip_to_line": true },
 		"context": [{"key": "setting.command_mode"}]
 	},
 
 	{ "keys": ["e"], "command": "set_motion", "args": {
 		"motion": "move",
 		"motion_args": {"by": "stops", "word_end": true, "punct_end": true, "empty_line": true, "forward": true, "extend": true },
-		"inclusive": true },
+		"inclusive": true,
+		"clip_to_line": true },
 		"context": [{"key": "setting.command_mode"}]
 	},
 
 	{ "keys": ["E"], "command": "set_motion", "args": {
 		"motion": "move",
 		"motion_args": {"by": "stops", "word_end": true, "empty_line": true, "separators": "", "forward": true, "extend": true },
-		"inclusive": true },
+		"inclusive": true,
+		"clip_to_line": true },
 		"context": [{"key": "setting.command_mode"}]
 	},
 
@@ -323,7 +431,8 @@
 	{ "keys": ["w"], "command": "set_motion", "args": {
 		"motion": "move",
 		"motion_args": {"by": "stops", "word_end": true, "punct_end": true, "empty_line": true, "forward": true, "extend": true },
-		"inclusive": true },
+		"inclusive": true,
+		"clip_to_line": true },
 		"context":
 		[
 			{"key": "setting.command_mode"},
@@ -335,7 +444,8 @@
 	{ "keys": ["W"], "command": "set_motion", "args": {
 		"motion": "move",
 		"motion_args": {"by": "stops", "word_end": true, "punct_end": true, "empty_line": true, "separators": "", "forward": true, "extend": true },
-		"inclusive": true },
+		"inclusive": true,
+		"clip_to_line": true },
 		"context":
 		[
 			{"key": "setting.command_mode"},
@@ -346,13 +456,15 @@
 	// Bonus: alt+w and alt+b move by sub-words
 	{ "keys": ["alt+w"], "command": "set_motion", "args": {
 		"motion": "move",
-		"motion_args": {"by": "stops", "word_begin": true, "sub_word_begin": true, "punct_begin": true, "empty_line": true, "forward": true, "extend": true }},
+		"motion_args": {"by": "stops", "word_begin": true, "sub_word_begin": true, "punct_begin": true, "empty_line": true, "forward": true, "extend": true },
+		"clip_to_line": true },
 		"context": [{"key": "setting.command_mode"}]
 	},
 	{ "keys": ["alt+w"], "command": "set_motion", "args": {
 		"motion": "move",
 		"motion_args": {"by": "stops", "word_end": true, "sub_word_end": true, "punct_end": true, "empty_line": true, "forward": true, "extend": true },
-		"inclusive": true },
+		"inclusive": true,
+		"clip_to_line": true },
 		"context":
 		[
 			{"key": "setting.command_mode"},
@@ -361,26 +473,38 @@
 	},
 	{ "keys": ["alt+b"], "command": "set_motion", "args": {
 		"motion": "move",
-		"motion_args": {"by": "stops", "word_begin": true, "sub_word_begin": true, "punct_begin": true, "empty_line": true, "forward": false, "extend": true }},
+		"motion_args": {"by": "stops", "word_begin": true, "sub_word_begin": true, "punct_begin": true, "empty_line": true, "forward": false, "extend": true },
+		"clip_to_line": true },
 		"context": [{"key": "setting.command_mode"}]
 	},
 
 	{ "keys": ["$"], "command": "set_motion", "args": {
 		"motion": "vi_move_to_hard_eol",
 		"motion_args": {"repeat": 1, "extend": true},
-		"inclusive": true },
+		"inclusive": true,
+		"clip_to_line": true },
 		"context": [{"key": "setting.command_mode"}]
 	},
 
 	{ "keys": ["^"], "command": "set_motion", "args": {
 		"motion": "vi_move_to_first_non_white_space_character",
-		"motion_args": {"extend": true }},
+		"motion_args": {"extend": true },
+		"clip_to_line": true },
+		"context": [{"key": "setting.command_mode"}]
+	},
+
+	{ "keys": ["_"], "command": "set_motion", "args": {
+		"motion": "vi_move_to_first_non_white_space_character",
+		"motion_args": {"extend": true, "repeat": 1 },
+		"linewise": true,
+		"clip_to_line": true },
 		"context": [{"key": "setting.command_mode"}]
 	},
 
 	{ "keys": [" "], "command": "set_motion", "args": {
 		"motion": "vi_move_by_characters",
-		"motion_args": {"forward": true, "extend": true, "visual": false }},
+		"motion_args": {"forward": true, "extend": true, "visual": false },
+		"clip_to_line": true },
 		"context": [{"key": "setting.command_mode"}]
 	},
 
@@ -409,53 +533,63 @@
 
 	{ "keys": ["j"], "command": "set_motion", "args": {
 		"motion": "move",
-		"motion_args": {"by": "lines", "forward": true, "extend": true }},
+		"motion_args": {"by": "lines", "forward": true, "extend": true },
+		"linewise": true },
 		"context": [{"key": "setting.command_mode"}]
 	},
 
 	{ "keys": ["k"], "command": "set_motion", "args": {
 		"motion": "move",
-		"motion_args": {"by": "lines", "forward": false, "extend": true }},
+		"motion_args": {"by": "lines", "forward": false, "extend": true },
+		"linewise": true },
 		"context": [{"key": "setting.command_mode"}]
 	},
 
 	{ "keys": ["G"], "command": "set_motion", "args": {
 		"motion": "vi_goto_line",
-		"motion_args": {"repeat": 1, "explicit_repeat": true, "extend": true }},
+		"motion_args": {"repeat": 1, "explicit_repeat": true, "extend": true,
+						"ending": "eof" },
+		"linewise": true },
 		"context": [{"key": "setting.command_mode"}]
 	},
 
 	{ "keys": ["g", "g"], "command": "set_motion", "args": {
-		"motion": "move_to",
-		"motion_args": {"to": "bof", "extend": true }},
+		"motion": "vi_goto_line",
+		"motion_args": {"repeat": 1, "explicit_repeat": true, "extend": true,
+						"ending": "bof" },
+		"linewise": true },
 		"context": [{"key": "setting.command_mode"}]
 	},
 
 	{ "keys": ["f", "<character>"], "command": "set_motion", "args": {
 		"motion": "vi_move_to_character",
 		"motion_args": {"extend": true },
-		"inclusive": true},
+		"inclusive": true,
+		"clip_to_line": true },
 		"context": [{"key": "setting.command_mode"}]
 	},
 
 	{ "keys": ["F", "<character>"], "command": "set_motion", "args": {
 		"motion": "vi_move_to_character",
 		"motion_args": {"extend": true, "forward": false },
-		"inclusive": true},
+		"inclusive": true,
+		"clip_to_line": true },
 		"context": [{"key": "setting.command_mode"}]
 	},
 
 	{ "keys": ["t", "<character>"], "command": "set_motion", "args": {
 		"motion": "vi_move_to_character",
 		"motion_args": {"extend": true, "before": true },
-		"inclusive": true},
+		"inclusive": true,
+		"clip_to_line": true },
 		"context": [{"key": "setting.command_mode"}]
 	},
 
 	{ "keys": ["T", "<character>"], "command": "set_motion", "args": {
 		"motion": "vi_move_to_character",
 		"motion_args": {"extend": true, "forward": false, "before": true },
-		"inclusive": true},
+		"inclusive": true,
+		"clip_to_line": true },
 		"context": [{"key": "setting.command_mode"}]
 	},
 
@@ -488,24 +622,27 @@
 
 	{ "keys": ["H"], "command": "set_motion", "args": {
 		"motion": "move_caret_to_screen_top",
-		"motion_args": {"repeat": 1}},
+		"motion_args": {"repeat": 1},
+		"linewise": true },
 		"context": [{"key": "setting.command_mode"}]
 	},
 	{ "keys": ["M"], "command": "set_motion", "args": {
-		"motion": "move_caret_to_screen_center"},
+		"motion": "move_caret_to_screen_center",
+		"linewise": true },
 		"context": [{"key": "setting.command_mode"}]
 	},
 	{ "keys": ["L"], "command": "set_motion", "args": {
 		"motion": "move_caret_to_screen_bottom",
-		"motion_args": {"repeat": 1}},
+		"motion_args": {"repeat": 1},
+		"linewise": true },
 		"context": [{"key": "setting.command_mode"}]
 	},
 
- 	{ "keys": ["z", "."], "command": "set_motion", "args": {
+	{ "keys": ["z", "."], "command": "set_motion", "args": {
 		"motion": "scroll_current_line_to_screen_center",
- 		"motion_args": {"repeat": 1}},
- 		"context": [{"key": "setting.command_mode"}]
- 	},
+		"motion_args": {"repeat": 1}},
+		"context": [{"key": "setting.command_mode"}]
+	},
 
 	{ "keys": ["z", "enter"], "command": "set_motion", "args": {
 		"motion": "scroll_current_line_to_screen_top",
@@ -514,11 +651,35 @@
 		"context": [{"key": "setting.command_mode"}]
 	},
 
+	{ "keys": ["z", "o"], "command": "unfold",
+		"context": [{"key": "setting.command_mode"}]
+	},
+
+	{ "keys": ["z", "O"], "command": "unfold",
+		"context": [{"key": "setting.command_mode"}]
+	},
+
+	{ "keys": ["z", "c"], "command": "fold",
+		"context": [{"key": "setting.command_mode"}]
+	},
+
+	{ "keys": ["z", "C"], "command": "fold",
+		"context": [{"key": "setting.command_mode"}]
+	},
+
+	{ "keys": ["z", "n"], "command": "unfold_all",
+		"context": [{"key": "setting.command_mode"}]
+	},
+
+	{ "keys": ["z", "R"], "command": "unfold_all",
+		"context": [{"key": "setting.command_mode"}]
+	},
+
 	// Motions to allow double press to mean entire line
 
 	{ "keys": ["c"], "command": "set_motion", "args": {
-		"motion": "expand_selection",
-		"motion_args": {"to": "line_without_eol" }},
+		"motion": "vi_dont_move",
+		"linewise": true},
 		"context":
 		[
 			{"key": "setting.command_mode"},
@@ -548,7 +709,10 @@
 		]
 	},
 
-	{ "keys": [">"], "command": "set_motion", "args": {"motion": null},
+	{ "keys": [">"], "command": "set_motion", "args": {
+		"motion": "expand_selection",
+		"motion_args": {"to": "line" },
+		"mode": "normal"},
 		"context":
 		[
 			{"key": "setting.command_mode"},
@@ -556,11 +720,24 @@
 		]
 	},
 
-	{ "keys": ["<"], "command": "set_motion", "args": {"motion": null},
+	{ "keys": ["<"], "command": "set_motion", "args": {
+		"motion": "expand_selection",
+		"motion_args": {"to": "line" },
+		"mode": "normal"},
 		"context":
 		[
 			{"key": "setting.command_mode"},
 			{"key": "vi_action", "operand": "vi_unindent"}
+		]
+	},
+
+	{ "keys": ["="], "command": "set_motion", "args": {
+		"motion": "expand_selection",
+		"mode": "normal"},
+		"context":
+		[
+			{"key": "setting.command_mode"},
+			{"key": "vi_action", "operand": "reindent"}
 		]
 	},
 
@@ -576,7 +753,7 @@
 
 	{ "keys": ["C"], "command": "set_action_motion", "args": {
 		"action": "enter_insert_mode",
-		"action_args": {"insert_command": "left_delete"},
+		"action_args": {"insert_command": "vi_delete"},
 		"motion": "vi_move_to_hard_eol",
 		"motion_args": {"repeat": 1, "extend": true},
 		"motion_inclusive": true },
@@ -592,7 +769,7 @@
 
 	{ "keys": ["s"], "command": "set_action_motion", "args": {
 		"action": "enter_insert_mode",
-		"action_args": {"insert_command": "left_delete"},
+		"action_args": {"insert_command": "vi_delete"},
 		"motion": "vi_move_by_characters_in_line",
 		"motion_args": {"forward": true, "extend": true, "visual": false }},
 		"context": [{"key": "setting.command_mode"}]
@@ -600,9 +777,9 @@
 
 	{ "keys": ["S"], "command": "set_action_motion", "args": {
 		"action": "enter_insert_mode",
-		"action_args": {"insert_command": "left_delete"},
-		"motion": "expand_selection",
-		"motion_args": {"to": "line_without_eol" }},
+		"action_args": {"insert_command": "vi_delete"},
+		"motion": "vi_dont_move",
+		"motion_linewise": true},
 		"context": [{"key": "setting.command_mode"}]
 	},
 
